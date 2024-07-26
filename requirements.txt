@@ -4,5 +4,4 @@ torchaudio
 transformers
 sentence-transformers
 accelerate
-langchain-community
-langchain-qdrant
+qdrant-client

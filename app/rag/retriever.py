@@ -1,4 +1,4 @@
-from client import VectorEngineClient
+from app.rag.client import VectorEngineClient
 
 client = VectorEngineClient()
 
@@ -6,15 +6,19 @@ client = VectorEngineClient()
 def retrieve(prompt):
     if classify_prompt(prompt) == 'GENERAL':
         return retrieve_top_n_docs(prompt)
-    else:
+    elif classify_prompt(prompt) == 'SYSTEM':
         return retrieve_active_alerts()
+    else:
+        return ""
 
 
 def classify_prompt(prompt):
     if prompt.startswith('GENERAL'):
         return 'GENERAL'
-    else:
+    elif prompt.startswith('SYSTEM'):
         return 'SYSTEM'
+    else:
+        return 'OTHER'
 
 
 def retrieve_top_n_docs(query, top_k=1):

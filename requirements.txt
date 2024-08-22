@@ -3,4 +3,7 @@ sentence-transformers
 accelerate
 qdrant-client
 bitsandbytes
+# set CMAKE_ARGS="-DGGML_CUDA=on" to enable CUDA support (which you should!)
 llama-cpp-python
+fastapi
+uvicorn

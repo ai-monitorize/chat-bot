@@ -1,31 +1,27 @@
 from llama_cpp import Llama
-
-
-class ChatMessage:
-    def __init__(self, role: str, content: str) -> None:
-        self.role = role
-        self.content = content
-
-
-class Chat:
-    def __init__(self, message: ChatMessage) -> None:
-        self.chat = [message]
-
-    def add_message(self, message: ChatMessage) -> None:
-        if len(self.chat) > 1:
-            self.chat[1] = message
-        else:
-            self.chat.append(message)
+from app.chat.chat import Chat
 
 
 class Llm:
-    def __init__(self, model_path: str) -> None:
-        self.model = Llama(model_path=model_path, n_gpu_layers=-1)
+    def __init__(self, model_id: str, file: str) -> None:
+        self.model = Llama.from_pretrained(repo_id=model_id, filename=file, n_gpu_layers=-1)
+
+    def generate_text_stream(self, chat: Chat) -> (str, bool):
+        stream = self.model.create_chat_completion(
+            messages=chat.messages,
+            stream=True
+        )
+
+        generated_text = ''
+        for output in stream:
+            choice = output['choices'][0]['delta']
+            text_chunk = choice['content'] if choice.__contains__('content') else ''
+            generated_text += text_chunk
+            yield text_chunk, False
+
+        return generated_text, True
 
     def generate_text(self, chat: Chat) -> str:
-        chat_history = "\n".join([f"{msg.role}: {msg.content}" for msg in chat.chat])
+        output = self.model.create_chat_completion(messages=chat.messages)
 
-        # Generate text using the model
-        output = self.model(chat_history, max_tokens=1024, temperature=0.1, top_p=0.9)
-
-        return output['choices'][0]['text']
+        return output['choices'][0]['message']['content']

@@ -14,16 +14,19 @@ class Chat:
         self.chat.append(message)
 
     def add_message(self, message: ChatMessage) -> None:
-        self.chat[1] = message
+        if len(self.chat) > 1:
+            self.chat[1] = message
+        else:
+            self.chat.append(message)
 
 
 class Llm:
-    def __init__(self, model_id: str, torch_dtype: torch.dtype) -> None:
+    def __init__(self, model_id: str, gguf_file=None) -> None:
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.tokenizer = AutoTokenizer.from_pretrained(model_id)
+        self.tokenizer = AutoTokenizer.from_pretrained(model_id, gguf_file=gguf_file)
         self.model = AutoModelForCausalLM.from_pretrained(
             model_id,
-            torch_dtype=torch_dtype,
+            # gguf_file=gguf_file,
             device_map="cuda" if torch.cuda.is_available() else "cpu",
         )
         self.streamer = TextStreamer(self.tokenizer)
@@ -45,8 +48,16 @@ class Llm:
                 temperature=0.1,
                 eos_token_id=terminators,
                 streamer=self.streamer,
-                return_dict_in_generate=True,
-                output_scores=True
+                # return_dict_in_generate=True,
+                # output_scores=True,
+                max_new_tokens =1024,
+                do_sample=True,
+                top_p=0.9,
         ):
-            decoded_output = self.tokenizer.decode(output[0][input_ids.shape[-1]:])
-            yield decoded_output
+            if output.dim() == 1:
+                # Handle the case where output is a 1D tensor
+                yield self.tokenizer.decode(output[input_ids.shape[-1]:])
+            elif output.dim() == 2:
+                # Handle the case where output is a 2D tensor
+                yield self.tokenizer.decode(output[0][input_ids.shape[-1]:])
+            # yield decoded_output

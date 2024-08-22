@@ -5,7 +5,7 @@ client = VectorEngineClient()
 
 def retrieve(prompt):
     if classify_prompt(prompt) == 'GENERAL':
-        return retrieve_top_n_docs(prompt)
+        return retrieve_top_n_docs(prompt)[0].payload.get("text")
     elif classify_prompt(prompt) == 'SYSTEM':
         return retrieve_active_alerts()
     else:

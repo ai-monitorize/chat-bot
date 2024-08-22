@@ -1,7 +1,6 @@
-torch
-torchvision
-torchaudio
 transformers
 sentence-transformers
 accelerate
 qdrant-client
+bitsandbytes
+llama-cpp-python

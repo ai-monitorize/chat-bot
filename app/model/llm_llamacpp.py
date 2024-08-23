@@ -4,12 +4,13 @@ from app.chat.chat import Chat
 
 class Llm:
     def __init__(self, model_id: str, file: str) -> None:
-        self.model = Llama.from_pretrained(repo_id=model_id, filename=file, n_gpu_layers=-1)
+        self.model = Llama.from_pretrained(repo_id=model_id, filename=file, n_gpu_layers=-1, n_ctx=10000)
 
     def generate_text_stream(self, chat: Chat) -> (str, bool):
         stream = self.model.create_chat_completion(
             messages=chat.messages,
-            stream=True
+            stream=True,
+            max_tokens=4096
         )
 
         generated_text = ''

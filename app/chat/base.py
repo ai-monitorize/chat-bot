@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import List
 
 
 class ChatMessage(dict):
@@ -24,10 +24,8 @@ class SystemMessage(ChatMessage):
 
 
 class Chat:
-    def __init__(self, initial_message: Optional[SystemMessage]):
-        self.messages: List[ChatMessage] = []
-        if initial_message is not None:
-            self.messages.append(initial_message)
+    def __init__(self, messages: List[ChatMessage]) -> None:
+        self.messages = messages
 
     def add_message(self, message: ChatMessage) -> None:
         self.messages.append(message)

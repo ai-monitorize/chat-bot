@@ -1,4 +1,4 @@
-from watson.llms import BaseLLM
+from app.llms import BaseLLM
 
 
 class ChatLLM(BaseLLM):

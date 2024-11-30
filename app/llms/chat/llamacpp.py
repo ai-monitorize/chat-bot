@@ -1,8 +1,8 @@
 from typing import Optional
 
 from llama_cpp import Llama
-from watson.chat import Chat
-from watson.llms.chat.base import ChatLLM
+from app.chat import Chat
+from app.llms.chat.base import ChatLLM
 
 
 class LLamaCppChat(ChatLLM):

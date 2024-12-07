@@ -6,10 +6,10 @@ from app.llms.chat.base import ChatLLM
 
 
 class LLamaCppChat(ChatLLM):
-    def __init__(self, model_id: Optional[str], file: Optional[str], ctx_size: Optional[int] = 8096,
+    def __init__(self, model_id: Optional[str], file: Optional[str], ctx_size: Optional[int] = 4096,
                  n_gpu_layers: Optional[int] = -1, local_file: Optional[str] = None):
 
-        if local_file is None and local_file is not '':
+        if local_file is None:
             self.model = Llama.from_pretrained(
                 repo_id=model_id,
                 filename=file,

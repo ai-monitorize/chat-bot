@@ -6,14 +6,22 @@ from app.llms.chat.base import ChatLLM
 
 
 class LLamaCppChat(ChatLLM):
-    def __init__(self, model_id: str, file: Optional[str], ctx_size: Optional[int] = 4096,
-                 n_gpu_layers: Optional[int] = -1):
-        self.model = self.model = Llama.from_pretrained(
-            repo_id=model_id,
-            filename=file,
-            n_ctx=ctx_size,
-            n_gpu_layers=n_gpu_layers
-        )
+    def __init__(self, model_id: Optional[str], file: Optional[str], ctx_size: Optional[int] = 8096,
+                 n_gpu_layers: Optional[int] = -1, local_file: Optional[str] = None):
+
+        if local_file is None and local_file is not '':
+            self.model = Llama.from_pretrained(
+                repo_id=model_id,
+                filename=file,
+                n_ctx=ctx_size,
+                n_gpu_layers=n_gpu_layers
+            )
+        else:
+            self.model = Llama(
+                model_path=local_file,
+                n_ctx=ctx_size,
+                n_gpu_layers=n_gpu_layers
+            )
 
     def invoke(self, *args, **kwargs):
         if kwargs["stream"]:

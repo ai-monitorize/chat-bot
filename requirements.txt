@@ -3,6 +3,7 @@ sentence-transformers
 accelerate
 qdrant-client
 bitsandbytes
+huggingface-hub
 # set CMAKE_ARGS="-DGGML_CUDA=on" (literally this command on windows) to enable CUDA support (which you should!)
 # https://github.com/abetlen/llama-cpp-python
 llama-cpp-python -C cmake.args="-DGGML_CUDA=on"

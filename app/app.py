@@ -23,10 +23,9 @@ app.add_middleware(
 # llm = LLamaCppChat(model_id="lmstudio-community/Meta-Llama-3.1-8B-Instruct-GGUF",
 #                    file="Meta-Llama-3.1-8B-Instruct-Q6_K.gguf")
 
-# llm = LLamaCppChat(model_id="bartowski/Llama-3.1-Nemotron-70B-Instruct-HF-GGUF",
-#                    file="Llama-3.1-Nemotron-70B-Instruct-HF-Q5_K_S.gguf")
+llm = LLamaCppChat(model_id="bartowski/Llama-3.1-Nemotron-70B-Instruct-HF-GGUF",
+                   file="Llama-3.1-Nemotron-70B-Instruct-HF-Q5_K_S.gguf")
 
-llm = LLamaCppChat(model_id='', file='', local_file='app/model/Llama-3.1-Nemotron-70B-Instruct-HF-Q5_K_S.gguf')
 chat_bot = ChatBot(llm)
 
 
